@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>
+        Welcome to Index! 
+        {% if current_user.is_authenticated %}
+        [{{ current_user.username}}]
+        {% endif %}
+    </h1>
+    <hr>
+    <div><h2>公共文件</h2></div>
+    <hr>
+    {% for file in files %}
+    {% if file.is_free %}
+    <div>
+        <div>
+            <p><a href="{{ url_for('download', filename=file.filename) }}"><strong>{{ file.source_filename }}</strong></a>  | 文件大小: {{ calcsize(file.size) }}</p>
+            <p>上传日期: {{ file.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+            <p>上传者：{{ file.uploader.username or '佚名' }}</p>
+        </div>
+        <div>
+            {% if 0 == rows(file.abstract)  %}
+            <p>简介: </p>
+            <textarea style= "background: transparent; border-style: none; " cols="101" rows="1" readonly="true">{{ file.abstract }}</textarea>
+            {% endif %}
+            {% if 1 == rows(file.abstract)  %}
+            <p>简介: </p>
+            <textarea style= "background: transparent; border-style: none; " cols="101" rows="1" readonly="true">{{ file.abstract }}</textarea>
+            {% endif %}
+            {% if 2 == rows(file.abstract) %}
+            <p>简介: </p>
+            <textarea style= "background: transparent; border-style: none; " cols="101" rows="2" readonly="true">{{ file.abstract }}</textarea>
+            {% endif %}
+            {% if 3 == rows(file.abstract) %}
+            <p>简介: </p>
+            <textarea style= "background: transparent; border-style: none; " cols="101" rows="3" readonly="true">{{ file.abstract }}</textarea>
+            {% endif %}
+            {% if 4 == rows(file.abstract) %}
+            <p>简介: </p>
+            <textarea style= "background: transparent; border-style: none; " cols="101" rows="4" readonly="true">{{ file.abstract }}</textarea>
+            {% endif %}
+            {% if 5 == rows(file.abstract) %}
+            <p>简介: </p>
+            <textarea style= "background: transparent; border-style: none; " cols="101" rows="5" readonly="true">{{ file.abstract }}</textarea>
+            {% endif %}
+            {% if 6 == rows(file.abstract) %}
+            <p>简介: </p>
+            <textarea style= "background: transparent; border-style: none; " cols="101" rows="6" readonly="true">{{ file.abstract }}</textarea>
+            {% endif %}
+            {% if 7 <= rows(file.abstract) %}
+            <p>简介: </p>
+            <textarea style= "background: transparent; border-style: none; " cols="101" rows="7" readonly="true">{{ file.abstract }}</textarea>
+            {% endif %}
+        </div>
+    </div>
+    <hr>
+    {% endif %}
+    {% endfor %}
+    {% if current_user.is_authenticated %}
+    <div><h2>个人文件</h2></div>
+    <hr>
+    {% for file in current_user.files %}
+    {% if not file.is_free %}
+    <div>
+        <div>
+            <p><a href="{{ url_for('download', filename=file.filename) }}"><strong>{{ file.source_filename }}</strong></a>  | 文件大小: {{ calcsize(file.size) }}</p>
+            <p>上传日期: {{ file.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+        </div>
+        <div>
+            {% if 0 == rows(file.abstract)  %}
+            <p>简介: </p>
+            <textarea style= "background: transparent; border-style: none; " cols="101" rows="1" readonly="true">{{ file.abstract }}</textarea>
+            {% endif %}
+            {% if 1 == rows(file.abstract)  %}
+            <p>简介: </p>
+            <textarea style= "background: transparent; border-style: none; " cols="101" rows="1" readonly="true">{{ file.abstract }}</textarea>
+            {% endif %}
+            {% if 2 == rows(file.abstract) %}
+            <p>简介: </p>
+            <textarea style= "background: transparent; border-style: none; " cols="101" rows="2" readonly="true">{{ file.abstract }}</textarea>
+            {% endif %}
+            {% if 3 == rows(file.abstract) %}
+            <p>简介: </p>
+            <textarea style= "background: transparent; border-style: none; " cols="101" rows="3" readonly="true">{{ file.abstract }}</textarea>
+            {% endif %}
+            {% if 4 == rows(file.abstract) %}
+            <p>简介: </p>
+            <textarea style= "background: transparent; border-style: none; " cols="101" rows="4" readonly="true">{{ file.abstract }}</textarea>
+            {% endif %}
+            {% if 5 == rows(file.abstract) %}
+            <p>简介: </p>
+            <textarea style= "background: transparent; border-style: none; " cols="101" rows="5" readonly="true">{{ file.abstract }}</textarea>
+            {% endif %}
+            {% if 6 == rows(file.abstract) %}
+            <p>简介: </p>
+            <textarea style= "background: transparent; border-style: none; " cols="101" rows="6" readonly="true">{{ file.abstract }}</textarea>
+            {% endif %}
+            {% if 7 <= rows(file.abstract) %}
+            <p>简介: </p>
+            <textarea style= "background: transparent; border-style: none; " cols="101" rows="7" readonly="true">{{ file.abstract }}</textarea>
+            {% endif %}
+        </div>
+    </div>
+    <hr>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>上传文件</h1>
+    <hr>
+    <form action="" method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <div class='form-group'>
+            {{ form.uploaded_file.label }}
+            {{ form.uploaded_file(size=115) }}
+            {% for error in form.uploaded_file.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+        <div><p></p></div>
+        <div class='form-group'>
+            {{ form.abstract.label }}
+            <p></p>
+            {{ form.abstract(cols=128, rows=13) }}
+        </div>
+        <div><p></p></div>
+        {% if current_user.is_authenticated %}
+        <div>{{ form.is_free() }} {{ form.is_free.label }}</div>
+        {% endif %}
+        <div><p></p></div>
+        <div>{{ form.submit() }}</div>
+    </form>
+    <hr>
+{% endblock %}

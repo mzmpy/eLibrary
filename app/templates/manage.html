@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>文件管理</h1>
+    <hr>
+    {% for file in current_user.files %}
+    <form action="" method="post">
+        <div>
+            <p>
+                <a href="{{ url_for('delete', filename=file.filename, sfilename=file.source_filename) }}" style="color: red" onclick="{if(confirm('确定删除吗?')){this.document.formname.submit();return true;}return false;}">删除</a>
+                <strong>{{ file.source_filename }}</strong>  | 文件大小: {{ calcsize(file.size) }}
+            </p>
+            <p>上传日期: {{ file.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+            <p> 文件类属：<strong>{{'{filetype}'.format(filetype='个人文件' if not file.is_free else '公共文件') }}</strong></p>
+        </div>
+    </form>
+    <hr>
+    {% endfor %}
+
+{% endblock %}
