@@ -78,7 +78,7 @@ def register():
 
 @app.route('/register_verification/<token>', methods=['GET', 'POST'])
 def rigister_verification(token):
-    user = User.verify_register_verification_token(token=token)
+    user = User.verify_register_verification_token(token)
     if not user:
         return render_template('cannot_verify.html', title='Not_Verified')
     user.verification = True

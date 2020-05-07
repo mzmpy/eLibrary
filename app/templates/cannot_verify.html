@@ -1,11 +1,9 @@
 <!DOCTYPE html>
-{% extends "base.html" %}
-
-{% block content %}
+<html>
     <h1>Index: Cannot Verify!</h1>
     <hr>
     <div>
-        {{ user.id }}，您的邮箱 {{ user.email }} 未经过验证，请重新尝试登录验证！
+        {{ user.username }}，您的邮箱 {{ user.email }} 未经过验证，请重新尝试登录验证！
     </div>
     <hr>
-{% endblock %}
+</html>

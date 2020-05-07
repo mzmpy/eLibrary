@@ -25,7 +25,8 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
     def __repr__(self):
-        return '<User {}>'.format(self.username)
+        return '[<User {}>, <email {}>, <verification {}>]'.format(self.username, 
+        self.email, self.verification)
 
     def get_register_verification_token(self, expires_in=1800):
         return jwt.encode({'register_verification': self.id, 'exp': time() + expires_in}, 
@@ -70,4 +71,5 @@ class File(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
-        return 'File: {}'.format(self.filename)
+        return '[<source_filename {}>, <owner {}>, <upload_date {}>, <is_free {}>]'.format(self.source_filename, 
+        User.query.get(self.user_id).username, self.timestamp, self.is_free)
