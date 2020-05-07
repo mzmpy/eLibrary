@@ -1,0 +1,12 @@
+<p>Dear {{ user.username }},</p>
+<p>
+    To verify your account
+    <a href="{{ url_for('rigister_verification', token=token, _external=True) }}">
+        click here
+    </a>.
+</p>
+<p>Alternatively, you can paste the following link in your browser's address bar:</p>
+<p>{{ url_for('rigister_verification', token=token, _external=True) }}</p>
+<p>If you have not requested an account verified simply ignore this message.</p>
+<p>Sincerely,</p>
+<p>The Index</p>

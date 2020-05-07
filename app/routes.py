@@ -8,6 +8,7 @@ from app.forms import LoginForm, RegistrationForm, UploadForm
 from app.models import User, File
 import os
 import re
+from app.email_verification import send_register_verification_email
 
 @app.route('/')
 def home():
@@ -47,6 +48,10 @@ def login():
         if user is None or not user.check_password(form.password.data):
             flash(u'无效的用户名或密码！', 'warning')
             return redirect('/login')
+        if not user.verification:
+            send_register_verification_email(user)
+            flash(u'用户未验证！请注意查收用户验证邮件！', 'warning')
+            return redirect('/login')
         login_user(user, remember=form.remember_me.data)
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
@@ -65,9 +70,20 @@ def register():
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
-        flash(u'注册成功！你可以自由使用 Index 了！', 'success')
+        send_register_verification_email(user)
+        flash(u'注册成功！但是请注意：请先到您的注册邮箱完成验证再登录！', 'success')
         return redirect('/login')
     return render_template('register.html', title='Register', form=form)
+
+
+@app.route('/register_verification/<token>', methods=['GET', 'POST'])
+def rigister_verification(token):
+    user = User.verify_register_verification_token(token=token)
+    if not user:
+        return render_template('cannot_verify.html', title='Not_Verified')
+    user.verification = True
+    db.session.commit()
+    return render_template('verify_successfully.html', title='Verified', user=user)
 
 
 @app.route('/logout')

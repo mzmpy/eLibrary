@@ -4,6 +4,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from datetime import datetime
 from app import db, login
+from app import app
+from time import time
+import jwt
 
 class User(UserMixin, db.Model):
 
@@ -11,6 +14,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
+    verification = db.Column(db.Boolean, default=False)
     posts = db.relationship('Post', backref='author', lazy='dynamic')
     files = db.relationship('File', backref='uploader', lazy='dynamic')
 
@@ -22,6 +26,19 @@ class User(UserMixin, db.Model):
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
+
+    def get_register_verification_token(self, expires_in=1800):
+        return jwt.encode({'register_verification': self.id, 'exp': time() + expires_in}, 
+        app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
+
+    @staticmethod
+    def verify_register_verification_token(token):
+            try:
+                id = jwt.decode(token.encode('utf-8'), app.config['SECRET_KEY'], 
+                algorithms=['HS256'])['register_verification']
+            except:
+                return
+            return User.query.get(id)
 
 
 @login.user_loader
