@@ -3,6 +3,12 @@
 from app import db
 from app.models import User, File
 
+def creat_user(username, password, email, verification=True):
+    user = User(username=username, email=email, verification=verification)
+    user.set_password(password=password)
+    db.session.add(user)
+    db.session.commit()
+
 def show_users():
     for user in User.query.all():
         print(user)
