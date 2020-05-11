@@ -35,6 +35,8 @@
                 {% if current_user.is_anonymous %}
                 <a href='/login'>Login</a>
                 {% else %}
+                <a href='/private'>Your Files</a>
+                |
                 <a href='/manage'>Manage</a>
                 |
                 <a href='/logout'>Logout</a>

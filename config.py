@@ -6,6 +6,7 @@ import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config(object):
+    FILES_PER_PAGE = 10
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'this-is-a-key'
 
     # SQLALCHEMY_DATABASE_URI配置变量记录应用的数据库的位置

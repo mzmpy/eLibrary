@@ -72,4 +72,4 @@ class File(db.Model):
 
     def __repr__(self):
         return '[<source_filename {}>, <owner {}>, <upload_date {}>, <is_free {}>]'.format(self.source_filename, 
-        User.query.get(self.user_id).username, self.timestamp, self.is_free)
+        User.query.get(self.user_id).username if self.user_id else '佚名', self.timestamp, self.is_free)

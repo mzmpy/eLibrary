@@ -12,7 +12,7 @@
                 <strong>{{ file.source_filename }}</strong>  | 文件大小: {{ calcsize(file.size) }}
             </p>
             <p>上传日期: {{ file.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</p>
-            <p> 文件类属：<strong>{{'{filetype}'.format(filetype='个人文件' if not file.is_free else '公共文件') }}</strong></p>
+            <p> 文件类属：<strong>{{'{filetype}'.format(filetype='私人文件' if not file.is_free else '公开文件') }}</strong></p>
         </div>
     </form>
     <hr>

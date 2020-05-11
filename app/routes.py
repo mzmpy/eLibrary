@@ -10,9 +10,13 @@ import os
 import re
 from app.email_verification import send_register_verification_email
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def home():
-    files = File.query.all()
+    page = request.args.get('page', 1, type=int)
+    #files = File.query.all()
+    files = File.query.filter_by(is_free=True).order_by(File.timestamp.desc()).paginate(page, app.config['FILES_PER_PAGE'], False)
+    pp = url_for('home', page=files.prev_num) if files.has_prev else None
+    np = url_for('home', page=files.next_num) if files.has_next else None
 
     def rows(obj):
         return int(len(obj) * 8 / 101)
@@ -28,7 +32,7 @@ def home():
     # for file in files:
     #     print(len(file.abstract))
     # print(current_user.username)
-    return render_template('home.html', files=files, rows=rows, calcsize=calcsize)
+    return render_template('home.html', files=files.items, rows=rows, calcsize=calcsize, prev_page=pp, next_page=np)
 
 
 @app.route('/download/<filename>', methods=['GET'])
@@ -53,6 +57,9 @@ def login():
             flash(u'用户未验证！请注意查收用户验证邮件！', 'warning')
             return redirect('/login')
         login_user(user, remember=form.remember_me.data)
+        # 每次匿名用户要访问某个被 @login_required 修饰的视图函数时，Flask-Login 会将其
+        # 重定向到 '/login' ，并添加一个查询字符串参数来丰富这个URL，如 '/login?next=/index' ，
+        # 其中 index 就是此用户希望访问的
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
             next_page = '/'
@@ -90,6 +97,27 @@ def rigister_verification(token):
 def logout():
     logout_user()
     return redirect('/')
+
+
+@app.route('/private', methods=['GET', 'POST'])
+def private():
+    page = request.args.get('page', 1, type=int)
+    files = File.query.filter_by(user_id=current_user.id).order_by(File.timestamp.desc()).paginate(page, app.config['FILES_PER_PAGE'], False)
+    pp = url_for('private', page=files.prev_num) if files.has_prev else None
+    np = url_for('private', page=files.next_num) if files.has_next else None
+
+    def rows(obj):
+        return int(len(obj) * 8 / 101)
+    
+    def calcsize(filesize):
+        if filesize < 100:
+            return '{}B'.format(filesize)
+        elif filesize < 1024*1024*0.9:
+            return '{:.2f}KB'.format(filesize/1024)
+        else:
+            return '{:.2f}MB'.format(filesize/1024/1024)
+
+    return render_template('private_files.html', files=files.items, rows=rows, calcsize=calcsize, prev_page=pp, next_page=np)
 
 
 @app.route('/manage')
