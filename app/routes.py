@@ -100,6 +100,7 @@ def logout():
 
 
 @app.route('/private', methods=['GET', 'POST'])
+@login_required
 def private():
     page = request.args.get('page', 1, type=int)
     files = File.query.filter_by(user_id=current_user.id).order_by(File.timestamp.desc()).paginate(page, app.config['FILES_PER_PAGE'], False)
@@ -117,11 +118,14 @@ def private():
         else:
             return '{:.2f}MB'.format(filesize/1024/1024)
 
-    return render_template('private_files.html', files=files.items, rows=rows, calcsize=calcsize, prev_page=pp, next_page=np)
+    return render_template('private_files.html', title='Private', files=files.items, rows=rows, calcsize=calcsize, prev_page=pp, next_page=np)
 
 
 @app.route('/manage')
+@login_required
 def manage():
+    files = File.query.filter_by(user_id=current_user.id).order_by(File.timestamp.desc()).all()
+    # print(type(files))
 
     def rows(obj):
         return int(len(obj) * 8 / 101)
@@ -134,10 +138,11 @@ def manage():
         else:
             return '{:.2f}MB'.format(filesize/1024/1024)
 
-    return render_template('manage.html', title='Manage', rows=rows, calcsize=calcsize)
+    return render_template('manage.html', title='Manage', files=files, rows=rows, calcsize=calcsize)
 
 
 @app.route('/delete/<filename>/<sfilename>')
+@login_required
 def delete(filename, sfilename):
     # print(filename, sfilename)
     for file in current_user.files:

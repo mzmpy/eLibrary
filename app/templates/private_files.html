@@ -4,7 +4,7 @@
 {% block content %}
     <h1>您上传的所有文件</h1>
     <hr>
-    {% for file in current_user.files %}
+    {% for file in files %}
     <div>
         <div>
             <p><a href="{{ url_for('download', filename=file.filename) }}"><strong>{{ file.source_filename }}</strong></a>  | 文件大小: {{ calcsize(file.size) }}</p>
