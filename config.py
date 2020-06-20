@@ -2,6 +2,7 @@
 
 import os
 
+# Flask 中环境变量变量一般使用大写字母形式
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 

@@ -10,7 +10,7 @@ import os
 import re
 from app.email_verification import send_register_verification_email
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])   # route 函数的第一个参数是 URL 规则，用字符串表示
 def home():
     page = request.args.get('page', 1, type=int)
     #files = File.query.all()
