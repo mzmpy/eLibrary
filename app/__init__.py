@@ -18,7 +18,7 @@ from pypinyin import lazy_pinyin
 from flask_mail import Mail
 
 app = Flask(__name__)   # 创建 Flask 程序实例，第一个参数是模块或包的名称；
-                        # 此处的 __name__ 表示的是当前文件（模块）的名称 "app"，
+                        # 此处的 __name__ 表示的是当前文件夹（模块）的名称 "app"，
                         # 这也帮助 Flask 在相应的文件夹内寻找所需资源
 
 # 项目环境变量配置

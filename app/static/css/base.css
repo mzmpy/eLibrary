@@ -1,0 +1,11 @@
+/* base.html 样式 */
+body {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    line-height: 1.375;
+    margin: 0;
+}
+
+.masthead {
+    color: #7e7e7e;
+    background-color: brown;
+}

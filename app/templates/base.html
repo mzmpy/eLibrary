@@ -6,44 +6,35 @@
         {% else %}
         <title>Index - 首页</title>
         {% endif %}
-        <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
-        <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
-        <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="{{url_for('static', filename='css/base.css')}}" type="text/css">
+        <!-- <style type="text/css">
+            body {
+                font-family: Georgia, 'Times New Roman', Times, serif;
+                line-height: 1.375;
+                margin: 0;
+            }
+
+            .masthead {
+                color: #7e7e7e;
+                background-color: brown;
+            }
+        </style> -->
     </head>
-    <div class="container">
-        <body>
-            <div>
-                {% with messages = get_flashed_messages(with_categories=True) %}
-                {% if messages %}
-                <p></p>
-                {% for message in messages %}
-                <div class="alert alert-{{ message[0] }}">
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    {{ message[1] }}
-                </div>
-                {% endfor %}
-                {% endif %}
-                {% endwith %}
+    <body>
+        <header class="masthead"><h1>Index Library</h1></header>
+        <nav role="navigation" class="navbar">
+            <div class="wrapper">
+                <ul>
+                    <li><a href='/'>Home</a></li>
+                    <li><a href='/upload'>Upload File</a></li>
+                    <li><a href='/login'>Login</a></li>
+                    <li><a href='/private'>Your Files</a></li>
+                    <li><a href='/manage'>Manage</a></li>
+                    <li><a href='/logout'>Logout</a></li>
+                </ul>
             </div>
-            <div>
-                <hr>
-                Index:
-                <a href='/'>Home</a>
-                 | 
-                <a href='/upload'>Upload File</a>
-                 | 
-                {% if current_user.is_anonymous %}
-                <a href='/login'>Login</a>
-                {% else %}
-                <a href='/private'>Your Files</a>
-                |
-                <a href='/manage'>Manage</a>
-                |
-                <a href='/logout'>Logout</a>
-                {% endif %}
-                <hr>
-            </div>
-            <div>{% block content %}{% endblock %}</div>
-        </body>        
-    </div>
+        </nav>
+        <div>{% block content %}{% endblock %}</div>
+    </body>
 </html>
