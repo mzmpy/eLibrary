@@ -13,7 +13,7 @@ Jinja2==2.10.1
 Mako==1.1.0
 MarkupSafe==1.1.1
 pkg-resources==0.0.0
-PyJWT==1.7.1
+PyJWT==2.4.0
 pypinyin==0.35.4
 python-dateutil==2.8.0
 python-dotenv==0.13.0
